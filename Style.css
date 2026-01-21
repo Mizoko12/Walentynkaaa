@@ -1,0 +1,154 @@
+/* --- USTAWIENIA OGÓLNE --- */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #FADADD; /* Różowe tło z Projektu 1 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden; /* Ukrywa paski przewijania na boki */
+}
+
+/* --- CZĘŚĆ 1: NAGŁÓWEK (SHINE) --- */
+#hedlinecontainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+#shine {
+    font-family: 'Arial', sans-serif; /* Lub inna jeśli wolisz */
+    font-size: 60px;
+    font-weight: bold;
+    color: rgba(255, 0, 102, 0.3);
+    z-index: 10;
+    background: -webkit-gradient(linear, left top, right top, from(#222), to(#222), color-stop(0.5, #fff)) 0 0 no-repeat;
+    -webkit-background-size: 150px;
+    -webkit-background-clip: text;
+    -webkit-animation-name: shine;
+    -webkit-animation-duration: 3s;
+    -webkit-animation-iteration-count: infinite;
+    text-shadow: 0 0px 0px rgba(233, 85, 189, 0.419);
+}
+
+@-webkit-keyframes shine {
+    0%, 10% { background-position: -1000px; }
+    20% { background-position: top left; }
+    90% { background-position: top right; }
+    100% { background-position: 1000px; }
+}
+
+/* --- CZĘŚĆ 2: GALERIA --- */
+.gallery-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 350px; /* Miejsce na galerię */
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.gallery {
+    --d: 10s; /* czas trwania animacji */
+    display: grid;
+    place-items: center;
+    width: 220px;
+    /* Usunięto sztywny margin-left, aby flexbox centrował */
+}
+
+.gallery > img {
+    grid-area: 1/1;
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border: 10px solid #f2f2f2;
+    box-shadow: 0 0 4px #0007;
+    z-index: 2;
+    animation: slide var(--d) infinite, z-order var(--d) infinite steps(1);
+}
+
+.gallery img:last-child {
+    animation-name: slide, z-order-last;
+}
+
+/* Opóźnienia animacji zdjęć */
+.gallery > img:nth-child(1) { animation-delay: calc(0*var(--d)); --r: 16deg; }
+.gallery > img:nth-child(2) { animation-delay: calc(-0.2*var(--d)); --r: -1deg; }
+.gallery > img:nth-child(3) { animation-delay: calc(-0.4*var(--d)); --r: -19deg; }
+.gallery > img:nth-child(4) { animation-delay: calc(-0.6*var(--d)); --r: 6deg; }
+.gallery > img:nth-child(5) { animation-delay: calc(-0.8*var(--d)); --r: -8deg; }
+
+@keyframes slide {
+    10% { transform: translateX(120%) rotate(var(--r)); }
+    0%, 100%, 20% { transform: translateX(0%) rotate(var(--r)); }
+}
+
+@keyframes z-order {
+    10%, 20% { z-index: 1; }
+    80% { z-index: 2; }
+}
+
+@keyframes z-order-last {
+    10%, 20% { z-index: 1; }
+    90% { z-index: 2; }
+}
+
+/* --- CZĘŚĆ 3: PYTANIE (INTERAKCJA) --- */
+#interaction-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+#image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px; /* Opcjonalnie zaokrąglone rogi gifów */
+}
+
+#question {
+    font-family: 'Sacramento', cursive;
+    font-size: 52px;
+    color: #333; /* Dodano kolor dla lepszej czytelności */
+    margin: 20px 0;
+}
+
+#options {
+    margin-top: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 26px;
+    font-family: 'Sacramento', cursive;
+    background-color: #FB607F;
+    color: white;
+    border: none;
+    border-radius: 5px; /* Dodano lekkie zaokrąglenie */
+    cursor: pointer;
+    transition: transform 0.2s; /* Płynne powiększanie */
+}
+
+button:hover {
+    background-color: #d94e6a;
+}
+
+/* --- RESPONSYWNOŚĆ (TELEFONY) --- */
+@media only screen and (max-width: 600px) {
+    #shine { font-size: 32px; }
+    
+    .gallery { width: 150px; }
+    
+    #question { font-size: 36px; }
+    
+    button { font-size: 20px; padding: 8px 16px; }
+}

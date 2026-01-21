@@ -5,15 +5,190 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Walentynka dla Ciebie ??</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap">
-    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* =========================================
+           STYL OGÓLNY I LAYOUT
+           ========================================= */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #FADADD; /* Ró¿owe t³o */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden; /* Ukrywa pasek przewijania bocznego */
+        }
+
+        /* Kontener g³ówny, ¿eby wszystko by³o wyœrodkowane w pionie */
+        .main-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            width: 100%;
+            padding: 20px 0;
+        }
+
+        /* =========================================
+           CZÊŒÆ 1: ANIMOWANY NAPIS
+           ========================================= */
+        #hedlinecontainer {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        #shine {
+            font-family: 'Arial', sans-serif;
+            font-size: 50px;
+            font-weight: bold;
+            color: rgba(255, 0, 102, 0.3);
+            background: -webkit-gradient(linear, left top, right top, from(#222), to(#222), color-stop(0.5, #fff)) 0 0 no-repeat;
+            -webkit-background-size: 150px;
+            -webkit-background-clip: text;
+            -webkit-animation-name: shine;
+            -webkit-animation-duration: 3s;
+            -webkit-animation-iteration-count: infinite;
+            text-shadow: 0 0px 0px rgba(233, 85, 189, 0.419);
+        }
+
+        @-webkit-keyframes shine {
+            0%, 10% { background-position: -1000px; }
+            20% { background-position: top left; }
+            90% { background-position: top right; }
+            100% { background-position: 1000px; }
+        }
+
+        /* =========================================
+           CZÊŒÆ 2: GALERIA (FLIP BOOK)
+           ========================================= */
+        .gallery {
+            --d: 10s; /* Czas trwania pe³nej pêtli */
+            display: grid;
+            place-items: center; /* Kluczowe: centruje zdjêcia w jednym punkcie */
+            width: 220px;
+            height: 220px; /* Dodano wysokoœæ, ¿eby trzyma³o fason */
+            margin: 0 auto 50px auto; /* Centrowanie kontenera */
+            position: relative;
+        }
+
+        .gallery > img {
+            grid-area: 1/1; /* Kluczowe: Wszystkie zdjêcia w tej samej komórce siatki */
+            width: 100%;
+            height: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            border: 10px solid #f2f2f2;
+            box-shadow: 0 0 4px #0007;
+            border-radius: 5px;
+            z-index: 2;
+            /* Animacja */
+            animation: slide var(--d) infinite, z-order var(--d) infinite steps(1);
+        }
+
+        /* OpóŸnienia dla ka¿dego zdjêcia (¿eby nie rusza³y siê na raz) */
+        .gallery > img:nth-child(1) { animation-delay: calc(0*var(--d));   --r: 16deg; }
+        .gallery > img:nth-child(2) { animation-delay: calc(-0.2*var(--d)); --r: -1deg; }
+        .gallery > img:nth-child(3) { animation-delay: calc(-0.4*var(--d)); --r: -19deg; }
+        .gallery > img:nth-child(4) { animation-delay: calc(-0.6*var(--d)); --r: 6deg; }
+        .gallery > img:nth-child(5) { animation-delay: calc(-0.8*var(--d)); --r: -8deg; }
+
+        /* Animacja przesuwania i rotacji */
+        @keyframes slide {
+            10% { transform: translateX(120%) rotate(var(--r)); }
+            0%, 100%, 20% { transform: translateX(0%) rotate(var(--r)); }
+        }
+
+        /* Animacja kolejnoœci (z-index) - ¿eby zdjêcia wraca³y na spód */
+        @keyframes z-order {
+            10%, 20% { z-index: 1; }
+            80% { z-index: 2; }
+        }
+        
+        @keyframes z-order-last {
+            10%, 20% { z-index: 1; }
+            90% { z-index: 2; }
+        }
+
+        .gallery img:last-child {
+            animation-name: slide, z-order-last;
+        }
+
+        /* =========================================
+           CZÊŒÆ 3: PYTANIE I KOTY
+           ========================================= */
+        #interaction-container {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #image-container {
+            min-height: 200px; /* Rezerwacja miejsca na gifa */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #image-container img {
+            max-width: 200px; /* Ograniczenie wielkoœci gifa */
+            border-radius: 10px;
+        }
+
+        #question {
+            font-family: 'Sacramento', cursive;
+            font-size: 42px;
+            color: #d6336c;
+            margin: 20px 0;
+            line-height: 1.2;
+        }
+
+        #options {
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 12px 24px;
+            margin: 10px;
+            font-size: 24px;
+            font-family: 'Sacramento', cursive;
+            background-color: #FB607F;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #d94e6a;
+            transform: scale(1.05);
+        }
+
+        /* =========================================
+           RESPONSYWNOŒÆ (TELEFONY)
+           ========================================= */
+        @media only screen and (max-width: 600px) {
+            #shine { font-size: 36px; }
+            .gallery { width: 180px; height: 180px; } /* Mniejsza galeria na telefonie */
+            #question { font-size: 32px; }
+            button { font-size: 20px; padding: 10px 20px; }
+        }
+    </style>
 </head>
 <body>
 
-    <div id="hedlinecontainer">
-        <div id="shine">Happy Valentine's Day??</div>
-    </div>
-  
-    <div class="gallery-wrapper">
+    <div class="main-wrapper">
+        
+        <div id="hedlinecontainer">
+            <div id="shine">Happy Valentine's Day??</div>
+        </div>
+    
         <div class="gallery">
             <img src="https://i.imgur.com/pYYjLzZ.jpeg" alt="foto1">
             <img src="https://i.imgur.com/M1X8hCx.jpeg" alt="foto2">
@@ -21,18 +196,87 @@
             <img src="https://i.imgur.com/54ZK3Fg.jpeg" alt="foto4">
             <img src="https://i.imgur.com/zSt9XFO_d.webp?maxwidth=760&fidelity=grand" alt="foto5">
         </div>
-    </div>
 
-    <div id="interaction-container">
-        <div id="image-container"></div> <div id="text-container">
-            <div id="question">Czy zostaniesz moj¹ walentynk¹?</div>
-            <div id="options">
-                <button id="yes-button" onclick="selectOption('yes')">Tak :)</button>
-                <button id="no-button" onclick="selectOption('no')">Nie :(</button>
+        <div id="interaction-container">
+            <div id="image-container"></div> <div id="text-container">
+                <div id="question">Czy zostaniesz moj¹ walentynk¹?</div>
+                <div id="options">
+                    <button id="yes-button" onclick="selectOption('yes')">Tak :)</button>
+                    <button id="no-button" onclick="selectOption('no')">Nie :(</button>
+                </div>
             </div>
         </div>
+
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        function selectOption(option) {
+            if (option === 'yes') {
+                flashRainbowColors(function() {
+                    document.getElementById('question').style.display = 'none';
+                    displayCatHeart();
+                });
+            } else if (option === 'no') {
+                document.getElementById('no-button').innerText = 'Napewno?'; 
+                var yesButton = document.getElementById('yes-button');
+                var currentFontSize = window.getComputedStyle(yesButton).getPropertyValue('font-size');
+                var newSize = parseFloat(currentFontSize) * 1.5;
+                yesButton.style.fontSize = newSize + 'px';
+            } else {
+                alert('B³¹d opcji!');
+            }
+        }
+
+        function flashRainbowColors(callback) {
+            var colors = ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#0000ff', '#4b0082', '#9400d3'];
+            var i = 0;
+            var interval = setInterval(function() {
+                document.body.style.backgroundColor = colors[i];
+                i = (i + 1) % colors.length;
+            }, 200); 
+            setTimeout(function() {
+                clearInterval(interval);
+                document.body.style.backgroundColor = '#FADADD';
+                if (callback) {
+                    callback();
+                }
+            }, 2000);
+        }
+
+        function displayCat() {
+            var imageContainer = document.getElementById('image-container');
+            var catImage = new Image();
+            catImage.src = 'cat.gif'; 
+            catImage.alt = 'Cat';
+            catImage.style.width = '100%'; // Dopasowanie
+            catImage.onload = function() {
+                imageContainer.appendChild(catImage);
+            };
+            catImage.onerror = function() {
+                // Fallback tekstowy, ¿ebyœ widzia³, ¿e skrypt dzia³a, nawet jak nie ma pliku
+                imageContainer.innerHTML = '<span style="font-size:50px">??</span>';
+            }
+        }
+
+        function displayCatHeart() {
+            document.getElementById('image-container').innerHTML = '';
+            var imageContainer = document.getElementById('image-container');
+            var catHeartImage = new Image();
+            catHeartImage.src = 'cat-heart.gif';
+            catHeartImage.alt = 'Cat Heart';
+            catHeartImage.style.width = '100%';
+            catHeartImage.onload = function() {
+                imageContainer.appendChild(catHeartImage);
+                document.getElementById('options').style.display = 'none';
+            };
+            catHeartImage.onerror = function() {
+                imageContainer.innerHTML = '<span style="font-size:50px">????</span>';
+                document.getElementById('options').style.display = 'none';
+            }
+        }
+
+        // Start
+        displayCat();
+    </script>
 </body>
 </html>
